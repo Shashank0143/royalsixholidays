@@ -1,8 +1,7 @@
 # Admin Notepad System - Complete Setup Guide
 
 ## 🔐 Admin Account Details
-- **Email**: VB5100@gmail.com
-- **Password**: Vbl@2611
+
 - **Name**: Admin User
 - **Phone**: +919876543210
 

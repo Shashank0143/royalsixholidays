@@ -78,15 +78,16 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
             <Link 
               href="/" 
-              className="flex items-center space-x-2 text-xl font-bold text-blue-600"
+              className="flex items-center space-x-1 sm:space-x-2 text-lg sm:text-xl font-bold text-blue-600"
             >
-              <MapPin className="w-6 h-6" />
-              <span>RoyalSixHolidays</span>
+              <MapPin className="w-5 h-5 sm:w-6 sm:h-6" />
+              <span className="hidden sm:block">RoyalSixHolidays</span>
+              <span className="block sm:hidden text-base">RSH</span>
             </Link>
           </motion.div>
 
@@ -115,16 +116,16 @@ const Navbar = () => {
               <div className="relative">
                 <motion.button
                   onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                  className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  className="flex items-center space-x-1 sm:space-x-2 px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors"
+                  whileHover={{ scale: 1.01 }}
+                  whileTap={{ scale: 0.99 }}
                 >
-                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                    <span className="text-white text-sm font-semibold">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                    <span className="text-white text-xs sm:text-sm font-semibold">
                       {user?.name?.charAt(0).toUpperCase()}
                     </span>
                   </div>
-                  <span className="text-sm font-medium text-gray-700">{user?.name}</span>
+                  <span className="hidden sm:block text-sm font-medium text-gray-700 max-w-20 truncate">{user?.name}</span>
                   {subscription.isSubscribed && (
                     <Crown className="w-4 h-4 text-yellow-500" />
                   )}
@@ -209,11 +210,11 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <motion.button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-gray-50"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            className="md:hidden p-2 rounded-lg hover:bg-gray-50 touch-manipulation"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
           </motion.button>
         </div>
 

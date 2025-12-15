@@ -28,11 +28,13 @@ const Layout = ({
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col overflow-x-hidden">
       {showNavbar && <Navbar />}
       
-      <main className={`flex-grow ${showNavbar ? 'pt-16' : ''} ${className}`}>
-        {children}
+      <main className={`flex-grow ${showNavbar ? 'pt-16' : ''} ${className} w-full`}>
+        <div className="w-full overflow-x-hidden">
+          {children}
+        </div>
       </main>
       
       {showFooter && <Footer />}

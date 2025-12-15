@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ArrowRight, Play, MapPin, Users, Shield, Star } from 'lucide-react';
 import IndiaMapEnhanced from '../components/map/IndiaMapEnhanced';
+import Layout from '../components/layout/Layout';
+
 export default function Home() {
   const router = useRouter();
   const [selectedState, setSelectedState] = useState(null);
@@ -48,13 +50,14 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-purple-600/10 to-pink-600/10" />
-        
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
+    <Layout>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+        {/* Hero Section */}
+        <section className="relative overflow-hidden">
+          {/* Background Pattern */}
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-purple-600/10 to-pink-600/10" />
+          
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
           <div className="text-center">
             {/* Main Hero Content */}
             <motion.div
@@ -64,7 +67,7 @@ export default function Home() {
               className="mb-12"
             >
               <motion.h1 
-                className="text-5xl md:text-7xl font-bold mb-6"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 leading-tight"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
@@ -77,7 +80,7 @@ export default function Home() {
               </motion.h1>
               
               <motion.p 
-                className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto"
+                className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto px-4"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
@@ -88,28 +91,28 @@ export default function Home() {
 
               {/* CTA Buttons */}
               <motion.div 
-                className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+                className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center px-4"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
               >
-                <Link href="/destinations">
+                <Link href="/destinations" className="w-full sm:w-auto">
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-2xl shadow-2xl flex items-center space-x-2 transition-all duration-300"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 sm:py-4 px-6 sm:px-8 rounded-2xl shadow-2xl flex items-center justify-center space-x-2 transition-all duration-300 text-sm sm:text-base"
                   >
                     <span>Start Your Journey</span>
-                    <ArrowRight className="w-5 h-5" />
+                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                   </motion.button>
                 </Link>
                 
                 <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-white/90 backdrop-blur-sm hover:bg-white text-gray-800 font-semibold py-4 px-8 rounded-2xl border border-gray-200 shadow-xl flex items-center space-x-2 transition-all duration-300"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full sm:w-auto bg-white/90 backdrop-blur-sm hover:bg-white text-gray-800 font-semibold py-3 sm:py-4 px-6 sm:px-8 rounded-2xl border border-gray-200 shadow-xl flex items-center justify-center space-x-2 transition-all duration-300 text-sm sm:text-base"
                 >
-                  <Play className="w-5 h-5" />
+                  <Play className="w-4 h-4 sm:w-5 sm:h-5" />
                   <span>Watch Story</span>
                 </motion.button>
               </motion.div>
@@ -120,7 +123,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8 }}
-              className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16"
+              className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 mb-12 sm:mb-16 px-4"
             >
               {[
                 { number: '500+', label: 'Destinations', icon: MapPin },
@@ -130,12 +133,12 @@ export default function Home() {
               ].map((stat, index) => (
                 <motion.div
                   key={index}
-                  whileHover={{ scale: 1.05 }}
-                  className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-xl"
+                  whileHover={{ scale: 1.02 }}
+                  className="bg-white/80 backdrop-blur-sm p-3 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl shadow-xl text-center"
                 >
-                  <stat.icon className="w-8 h-8 mx-auto mb-3 text-blue-600" />
-                  <div className="text-3xl font-bold text-gray-800 mb-1">{stat.number}</div>
-                  <div className="text-gray-600">{stat.label}</div>
+                  <stat.icon className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 mx-auto mb-2 sm:mb-3 text-blue-600" />
+                  <div className="text-lg sm:text-2xl md:text-3xl font-bold text-gray-800 mb-1">{stat.number}</div>
+                  <div className="text-xs sm:text-sm md:text-base text-gray-600">{stat.label}</div>
                 </motion.div>
               ))}
             </motion.div>
@@ -144,18 +147,18 @@ export default function Home() {
       </section>
 
       {/* Interactive India Map - All 29 States */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
+      <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-8 sm:mb-12 md:mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4 sm:mb-6 px-2">
               Discover All 29 States of India
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto px-4">
               Click any state to explore destinations • Watch animated cars travel between states • 
               Discover 87+ incredible destinations across all 29 states
             </p>
@@ -175,7 +178,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -30 }}
-                className="mt-12 bg-white rounded-2xl shadow-2xl p-8 max-w-4xl mx-auto"
+                className="mt-8 sm:mt-12 bg-white rounded-xl sm:rounded-2xl shadow-2xl p-4 sm:p-6 md:p-8 max-w-4xl mx-auto"
               >
                 <div className="text-center mb-8">
                   <h3 className="text-3xl font-bold text-gray-800 mb-4">
@@ -186,16 +189,16 @@ export default function Home() {
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                   {selectedState.destinations?.map((destination, index) => (
                     <motion.div
                       key={index}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 }}
-                      whileHover={{ y: -5, scale: 1.02 }}
+                      whileHover={{ y: -2, scale: 1.01 }}
                       onClick={() => handleDestinationClick(destination, selectedState)}
-                      className="bg-gradient-to-br from-orange-50 to-green-50 p-6 rounded-xl shadow-lg cursor-pointer group"
+                      className="bg-gradient-to-br from-orange-50 to-green-50 p-4 sm:p-6 rounded-xl shadow-lg cursor-pointer group touch-manipulation"
                     >
                       <div className="text-center">
                         <div className="text-4xl mb-4">📍</div>
@@ -235,22 +238,22 @@ export default function Home() {
       </section>
 
       {/* Popular Destinations Preview */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white/50">
+      <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 bg-white/50">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-8 sm:mb-12 md:mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-800 mb-4">Popular Destinations</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-4 px-2">Popular Destinations</h2>
+            <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto px-4">
               Discover handpicked destinations across India, each offering unique experiences 
               and unforgettable memories.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
             {[
               { name: 'Taj Mahal (Agra)', region: 'Uttar Pradesh', price: '₹18,500', emoji: '🕌', rating: '4.9' },
               { name: 'Munnar', region: 'Kerala', price: '₹22,000', emoji: '🌿', rating: '4.8' },
@@ -265,11 +268,11 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -10, scale: 1.02 }}
-                className="bg-white rounded-2xl shadow-xl overflow-hidden cursor-pointer group"
+                whileHover={{ y: -5, scale: 1.01 }}
+                className="bg-white rounded-xl sm:rounded-2xl shadow-xl overflow-hidden cursor-pointer group touch-manipulation"
               >
-                <div className="relative h-48 bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
-                  <span className="text-6xl">{dest.emoji}</span>
+                <div className="relative h-32 sm:h-40 md:h-48 bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
+                  <span className="text-4xl sm:text-5xl md:text-6xl">{dest.emoji}</span>
                   <div className="absolute top-4 right-4 bg-white bg-opacity-90 px-2 py-1 rounded-full flex items-center space-x-1">
                     <Star className="w-4 h-4 text-yellow-500 fill-current" />
                     <span className="text-sm font-semibold">{dest.rating}</span>
@@ -279,15 +282,15 @@ export default function Home() {
                   </div>
                 </div>
                 
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">{dest.name}</h3>
+                <div className="p-4 sm:p-6">
+                  <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-800 mb-2 line-clamp-1">{dest.name}</h3>
                   <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold text-gray-800">{dest.price}</span>
+                    <span className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800">{dest.price}</span>
                     <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
                       onClick={() => handleDestinationExplore(dest.name)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium"
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 sm:px-4 rounded-lg font-medium text-sm touch-manipulation"
                     >
                       Explore
                     </motion.button>
@@ -300,21 +303,21 @@ export default function Home() {
       </section>
 
       {/* Subscription Plans Preview */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
+      <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-8 sm:mb-12 md:mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-800 mb-4">Choose Your Travel Style</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-4 px-2">Choose Your Travel Style</h2>
+            <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto px-4">
               Unlock exclusive destinations and premium travel experiences.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 max-w-5xl mx-auto">
             {[
               {
                 name: 'Explorer',
@@ -428,12 +431,12 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.2 }}
-                  whileHover={{ scale: 1.05 }}
-                  className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl"
+                  whileHover={{ scale: 1.02 }}
+                  className="bg-white/10 backdrop-blur-sm p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl"
                 >
-                  <div className="text-6xl mb-6">{feature.emoji}</div>
-                  <h3 className="text-2xl font-bold mb-4">{feature.title}</h3>
-                  <p className="text-white/80 leading-relaxed">{feature.description}</p>
+                  <div className="text-4xl sm:text-5xl md:text-6xl mb-4 sm:mb-6">{feature.emoji}</div>
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-3 sm:mb-4">{feature.title}</h3>
+                  <p className="text-white/80 leading-relaxed text-sm sm:text-base">{feature.description}</p>
                 </motion.div>
               ))}
             </div>
@@ -442,36 +445,36 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-blue-50">
+      <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-blue-50">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-8">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-6 sm:mb-8 px-2">
               Ready for Your Next Adventure?
             </h2>
-            <p className="text-xl text-gray-600 mb-12">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-8 sm:mb-12 px-4">
               Join thousands of travelers who have discovered the magic of India with us.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Link href="/auth/register">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center px-4">
+              <Link href="/auth/register" className="w-full sm:w-auto">
                 <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-2xl shadow-2xl transition-all duration-300"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 sm:py-4 px-6 sm:px-8 rounded-2xl shadow-2xl transition-all duration-300 touch-manipulation"
                 >
                   Create Account
                 </motion.button>
               </Link>
               
-              <Link href="/destinations">
+              <Link href="/destinations" className="w-full sm:w-auto">
                 <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-white hover:bg-gray-50 text-gray-800 font-semibold py-4 px-8 rounded-2xl border border-gray-200 shadow-xl transition-all duration-300"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-800 font-semibold py-3 sm:py-4 px-6 sm:px-8 rounded-2xl border border-gray-200 shadow-xl transition-all duration-300 touch-manipulation"
                 >
                   Browse Destinations
                 </motion.button>
@@ -480,6 +483,7 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-    </div>
+      </div>
+    </Layout>
   );
 }

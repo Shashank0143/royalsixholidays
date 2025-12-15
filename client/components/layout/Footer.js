@@ -46,7 +46,7 @@ const Footer = () => {
     <footer className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Footer Content */}
-        <div className="py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="py-8 sm:py-10 md:py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {/* Company Info */}
           <div className="space-y-4">
             <motion.div
@@ -156,8 +156,8 @@ const Footer = () => {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors"
-                    whileHover={{ scale: 1.1 }}
+                    className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors touch-manipulation"
+                    whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     aria-label={social.label}
                   >
@@ -170,8 +170,8 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-800 py-6">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+        <div className="border-t border-gray-800 py-4 sm:py-6">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0 text-center md:text-left">
             <motion.p 
               className="text-gray-400 text-sm flex items-center"
               initial={{ opacity: 0 }}
@@ -185,19 +185,21 @@ const Footer = () => {
             </motion.p>
             
             <motion.div 
-              className="flex items-center space-x-6 text-sm"
+              className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-6 text-xs sm:text-sm"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              <Link href="/sitemap" className="text-gray-400 hover:text-white transition-colors">
-                Sitemap
-              </Link>
-              <Link href="/accessibility" className="text-gray-400 hover:text-white transition-colors">
-                Accessibility
-              </Link>
-              <div className="text-gray-600">|</div>
+              <div className="flex items-center space-x-4 sm:space-x-6">
+                <Link href="/sitemap" className="text-gray-400 hover:text-white transition-colors">
+                  Sitemap
+                </Link>
+                <Link href="/accessibility" className="text-gray-400 hover:text-white transition-colors">
+                  Accessibility
+                </Link>
+              </div>
+              <div className="hidden sm:block text-gray-600">|</div>
               <span className="text-gray-400">Made for travelers, by travelers</span>
             </motion.div>
           </div>
