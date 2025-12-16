@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { ArrowRight, Star, MapPin } from 'lucide-react';
 
 const DestinationCard = ({ destination, index, onClick }) => {
@@ -13,21 +14,36 @@ const DestinationCard = ({ destination, index, onClick }) => {
     >
       {/* Image Container */}
       <div className="relative h-48 overflow-hidden">
-        <motion.div
-          className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500"
-          whileHover={{ scale: 1.1 }}
-          transition={{ duration: 0.3 }}
-        >
-          {/* Placeholder for destination image */}
-          <div className="w-full h-full flex items-center justify-center">
-            <span className="text-6xl">
-              {destination.emoji || '🏛️'}
-            </span>
-          </div>
-        </motion.div>
-        
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-10 transition-all duration-300" />
+        {destination.image ? (
+          <>
+            <Image
+              src={destination.image}
+              alt={destination.alt || destination.name}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            />
+            {/* Gradient overlay for better text visibility */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 group-hover:from-black/30 group-hover:to-black/10 transition-all duration-500" />
+          </>
+        ) : (
+          <>
+            <motion.div
+              className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500"
+              whileHover={{ scale: 1.1 }}
+              transition={{ duration: 0.3 }}
+            >
+              {/* Fallback emoji for destinations without images */}
+              <div className="w-full h-full flex items-center justify-center">
+                <span className="text-6xl">
+                  {destination.emoji || '🏛️'}
+                </span>
+              </div>
+            </motion.div>
+            {/* Overlay */}
+            <div className="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-10 transition-all duration-300" />
+          </>
+        )}
         
         {/* Rating Badge */}
         <div className="absolute top-4 right-4 bg-white bg-opacity-90 px-2 py-1 rounded-full flex items-center space-x-1">
@@ -202,21 +218,7 @@ const DestinationGrid = ({ destinations = [], onDestinationClick }) => {
         ))}
       </div>
 
-      {/* View More Button */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8 }}
-        className="text-center mt-12"
-      >
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-full font-semibold shadow-lg transition-all duration-300"
-        >
-          View All Destinations
-        </motion.button>
-      </motion.div>
+
     </motion.div>
   );
 };

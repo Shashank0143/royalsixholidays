@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { ArrowRight, Play, MapPin, Users, Shield, Star } from 'lucide-react';
 import IndiaMapEnhanced from '../components/map/IndiaMapEnhanced';
 import Layout from '../components/layout/Layout';
+import ImageWithLoading from '../components/ui/ImageWithLoading';
 
 export default function Home() {
   const router = useRouter();
@@ -255,12 +256,54 @@ export default function Home() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
             {[
-              { name: 'Taj Mahal (Agra)', region: 'Uttar Pradesh', price: '₹18,500', emoji: '🕌', rating: '4.9' },
-              { name: 'Munnar', region: 'Kerala', price: '₹22,000', emoji: '🌿', rating: '4.8' },
-              { name: 'Baga Beach', region: 'Goa', price: '₹15,000', emoji: '🏖️', rating: '4.7' },
-              { name: 'Manali', region: 'Himachal Pradesh', price: '₹35,000', emoji: '🏔️', rating: '4.9' },
-              { name: 'Jaipur', region: 'Rajasthan', price: '₹28,000', emoji: '🏰', rating: '4.8' },
-              { name: 'Meenakshi Temple', region: 'Tamil Nadu', price: '₹16,500', emoji: '⛩️', rating: '4.6' }
+              { 
+                name: 'Taj Mahal (Agra)', 
+                region: 'Uttar Pradesh', 
+                price: '₹18,500', 
+                image: '/assets/Places/TajMahal.jpg', 
+                rating: '4.9',
+                alt: 'Taj Mahal - UNESCO World Heritage Site in Agra, Uttar Pradesh'
+              },
+              { 
+                name: 'Munnar', 
+                region: 'Kerala', 
+                price: '₹22,000', 
+                image: '/assets/Places/munnar.jpg', 
+                rating: '4.8',
+                alt: 'Munnar - Beautiful hill station with tea plantations in Kerala'
+              },
+              { 
+                name: 'Baga Beach', 
+                region: 'Goa', 
+                price: '₹15,000', 
+                image: '/assets/Places/BagaBeach.jpg', 
+                rating: '4.7',
+                alt: 'Baga Beach - Popular beach destination in North Goa'
+              },
+              { 
+                name: 'Manali', 
+                region: 'Himachal Pradesh', 
+                price: '₹35,000', 
+                image: '/assets/Places/Manali.jpg', 
+                rating: '4.9',
+                alt: 'Manali - Scenic hill station in Himachal Pradesh'
+              },
+              { 
+                name: 'Jaipur', 
+                region: 'Rajasthan', 
+                price: '₹28,000', 
+                image: '/assets/Places/Jaipur.jpg', 
+                rating: '4.8',
+                alt: 'Jaipur - The Pink City with magnificent palaces and forts in Rajasthan'
+              },
+              { 
+                name: 'Meenakshi Temple', 
+                region: 'Tamil Nadu', 
+                price: '₹16,500', 
+                image: '/assets/Places/MeenakshiTemple.jpg', 
+                rating: '4.6',
+                alt: 'Meenakshi Temple - Ancient Hindu temple in Madurai, Tamil Nadu'
+              }
             ].map((dest, index) => (
               <motion.div
                 key={index}
@@ -271,28 +314,50 @@ export default function Home() {
                 whileHover={{ y: -5, scale: 1.01 }}
                 className="bg-white rounded-xl sm:rounded-2xl shadow-xl overflow-hidden cursor-pointer group touch-manipulation"
               >
-                <div className="relative h-32 sm:h-40 md:h-48 bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
-                  <span className="text-4xl sm:text-5xl md:text-6xl">{dest.emoji}</span>
-                  <div className="absolute top-4 right-4 bg-white bg-opacity-90 px-2 py-1 rounded-full flex items-center space-x-1">
-                    <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                    <span className="text-sm font-semibold">{dest.rating}</span>
+                <div className="relative h-32 sm:h-40 md:h-48 overflow-hidden">
+                  <ImageWithLoading
+                    src={dest.image}
+                    alt={dest.alt}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    priority={index < 3}
+                  />
+                  {/* Gradient overlay for better text visibility */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 group-hover:from-black/30 group-hover:to-black/10 transition-all duration-500" />
+                  
+                  {/* Rating Badge */}
+                  <div className="absolute top-2 sm:top-4 right-2 sm:right-4 bg-white/95 backdrop-blur-sm px-2 py-1 rounded-full flex items-center space-x-1 shadow-lg border border-white/20">
+                    <Star className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-500 fill-current" />
+                    <span className="text-xs sm:text-sm font-bold text-gray-800">{dest.rating}</span>
                   </div>
-                  <div className="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-medium">
+                  
+                  {/* Region Badge */}
+                  <div className="absolute top-2 sm:top-4 left-2 sm:left-4 bg-blue-600/90 backdrop-blur-sm text-white px-2 sm:px-3 py-1 rounded-full text-xs font-medium shadow-lg border border-blue-500/30">
                     {dest.region}
+                  </div>
+                  
+                  {/* Price Badge - Bottom Left */}
+                  <div className="absolute bottom-2 sm:bottom-4 left-2 sm:left-4 bg-green-600/90 backdrop-blur-sm text-white px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-bold shadow-lg border border-green-500/30">
+                    {dest.price}
                   </div>
                 </div>
                 
                 <div className="p-4 sm:p-6">
-                  <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-800 mb-2 line-clamp-1">{dest.name}</h3>
+                  <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-800 mb-3 line-clamp-1 group-hover:text-blue-600 transition-colors duration-300">{dest.name}</h3>
                   <div className="flex items-center justify-between">
-                    <span className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800">{dest.price}</span>
+                    <div className="flex items-center space-x-2">
+                      <MapPin className="w-4 h-4 text-gray-500" />
+                      <span className="text-sm text-gray-600">{dest.region}</span>
+                    </div>
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => handleDestinationExplore(dest.name)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 sm:px-4 rounded-lg font-medium text-sm touch-manipulation"
+                      className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-300 touch-manipulation flex items-center space-x-1"
                     >
-                      Explore
+                      <span>Explore</span>
+                      <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
                     </motion.button>
                   </div>
                 </div>

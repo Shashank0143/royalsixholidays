@@ -35,7 +35,8 @@ const DestinationsPage = () => {
       price: 45000,
       rating: 4.9,
       duration: '7-8 days',
-      emoji: '🏔️',
+      image: '/assets/Destination/Kashmir Great lakes.jpg',
+      alt: 'Kashmir Great Lakes - Alpine trekking adventure in pristine mountain wilderness',
       category: 'adventure',
       difficulty: 'Hard',
       bestTime: 'July-September'
@@ -51,7 +52,8 @@ const DestinationsPage = () => {
       price: 12000,
       rating: 4.7,
       duration: '2-3 days',
-      emoji: '🏰',
+      image: '/assets/Destination/MysorePalaceHeritage.jpg',
+      alt: 'Mysore Palace Heritage - Royal Wodeyar dynasty palace and cultural experience',
       category: 'cultural',
       difficulty: 'Easy',
       bestTime: 'October-March'
@@ -67,7 +69,8 @@ const DestinationsPage = () => {
       price: 35000,
       rating: 4.8,
       duration: '5-6 days',
-      emoji: '🏝️',
+      image: '/assets/Destination/AndamanCoralIslands.jpg',
+      alt: 'Andaman Coral Islands - Pristine beaches and vibrant underwater coral reefs',
       category: 'beach',
       difficulty: 'Medium',
       bestTime: 'November-April'
@@ -83,7 +86,8 @@ const DestinationsPage = () => {
       price: 18000,
       rating: 4.6,
       duration: '4-5 days',
-      emoji: '🧘‍♀️',
+      image: '/assets/Destination/RishikeshYogaRetreat.jpg',
+      alt: 'Rishikesh Yoga Retreat - Spiritual wellness by the sacred Ganges river',
       category: 'spiritual',
       difficulty: 'Easy',
       bestTime: 'September-April'
@@ -99,7 +103,8 @@ const DestinationsPage = () => {
       price: 42000,
       rating: 4.9,
       duration: '8-9 days',
-      emoji: '🏜️',
+      image: '/assets/Destination/SpitiValleyExpedition.jpg',
+      alt: 'Spiti Valley Expedition - High-altitude cold desert and ancient Buddhist monasteries',
       category: 'adventure',
       difficulty: 'Hard',
       bestTime: 'May-October'
@@ -115,7 +120,8 @@ const DestinationsPage = () => {
       price: 15000,
       rating: 4.8,
       duration: '3-4 days',
-      emoji: '🏛️',
+      image: '/assets/Destination/HampiRuinsDiscovery.jpg',
+      alt: 'Hampi Ruins Discovery - Ancient Vijayanagara Empire archaeological site',
       category: 'cultural',
       difficulty: 'Medium',
       bestTime: 'November-February'
@@ -261,21 +267,7 @@ const DestinationsPage = () => {
               onDestinationClick={handleDestinationClick}
             />
 
-            {/* Load More */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 }}
-              className="text-center mt-16"
-            >
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-2xl font-semibold shadow-xl transition-all duration-300"
-              >
-                Load More Destinations
-              </motion.button>
-            </motion.div>
+
           </div>
         </section>
       </div>
