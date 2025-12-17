@@ -1,5 +1,7 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { 
   MapPin, 
   Mail, 
@@ -8,11 +10,44 @@ import {
   Twitter, 
   Instagram, 
   Youtube,
-  Heart
+  Heart,
+  Lock,
+  X
 } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const router = useRouter();
+  const [showCodeModal, setShowCodeModal] = useState(false);
+  const [codeInput, setCodeInput] = useState('');
+  const [codeError, setCodeError] = useState('');
+  
+  const LEGAL_PRIVACY_CODE = process.env.NEXT_PUBLIC_PRIVACY_CODE; // You can change this code
+
+  const handleLegalPrivacyClick = (e) => {
+    e.preventDefault();
+    setShowCodeModal(true);
+    setCodeInput('');
+    setCodeError('');
+  };
+
+  const handleCodeSubmit = () => {
+    if (codeInput === LEGAL_PRIVACY_CODE) {
+      setShowCodeModal(false);
+      // Store access in sessionStorage and redirect to disclaimer page
+      sessionStorage.setItem('legalPrivacyAccess', 'true');
+      router.push('/disclaimer?legalPrivacy=true');
+    } else {
+      setCodeError('Invalid code. Please try again.');
+      setCodeInput('');
+    }
+  };
+
+  const handleCodeChange = (e) => {
+    const value = e.target.value.replace(/\D/g, '').slice(0, 4);
+    setCodeInput(value);
+    setCodeError('');
+  };
 
   const footerLinks = {
     company: [
@@ -31,7 +66,8 @@ const Footer = () => {
       { label: 'Terms & Conditions', href: '/terms' },
       { label: 'Privacy Policy', href: '/privacy' },
       { label: 'Cookie Policy', href: '/cookies' },
-      { label: 'Disclaimer', href: '/disclaimer' }
+      { label: 'Disclaimer', href: '/disclaimer' },
+      { label: 'Legal Privacy', href: '#legal-privacy', special: true }
     ]
   };
 
@@ -73,7 +109,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-2 text-sm">
                 <Phone className="w-4 h-4 text-blue-400" />
-                <span className="text-gray-400">+91 99999 99999</span>
+                <span className="text-gray-400">+91 8929889345</span>
               </div>
             </div>
           </div>
@@ -136,12 +172,22 @@ const Footer = () => {
             <ul className="space-y-2">
               {footerLinks.legal.map((link) => (
                 <li key={link.href}>
-                  <Link 
-                    href={link.href}
-                    className="text-gray-400 hover:text-white transition-colors text-sm"
-                  >
-                    {link.label}
-                  </Link>
+                  {link.special ? (
+                    <button 
+                      onClick={handleLegalPrivacyClick}
+                      className="text-gray-400 hover:text-white transition-colors text-sm flex items-center space-x-1 group"
+                    >
+                      <Lock className="w-3 h-3 group-hover:text-yellow-400 transition-colors" />
+                      <span>{link.label}</span>
+                    </button>
+                  ) : (
+                    <Link 
+                      href={link.href}
+                      className="text-gray-400 hover:text-white transition-colors text-sm"
+                    >
+                      {link.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
@@ -205,6 +251,93 @@ const Footer = () => {
           </div>
         </div>
       </div>
+
+      {/* Legal Privacy Code Modal */}
+      <AnimatePresence>
+        {showCodeModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black bg-opacity-75"
+              onClick={() => setShowCodeModal(false)}
+            />
+            
+            {/* Modal */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl"
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setShowCodeModal(false)}
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+
+              {/* Modal Content */}
+              <div className="text-center">
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Lock className="w-8 h-8 text-blue-600" />
+                </div>
+                
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">Legal Privacy Access</h2>
+                <p className="text-gray-600 mb-6">Enter the 4-digit access code</p>
+
+                {/* Code Input */}
+                <div className="mb-4">
+                  <input
+                    type="text"
+                    value={codeInput}
+                    onChange={handleCodeChange}
+                    placeholder="Enter 4-digit code"
+                    className="w-full text-center text-2xl font-mono tracking-widest border-2 border-gray-300 rounded-lg py-3 px-4 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors"
+                    maxLength={4}
+                    autoFocus
+                  />
+                </div>
+
+                {/* Error Message */}
+                {codeError && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-red-500 text-sm mb-4"
+                  >
+                    {codeError}
+                  </motion.p>
+                )}
+
+                {/* Submit Button */}
+                <div className="flex space-x-3">
+                  <button
+                    onClick={() => setShowCodeModal(false)}
+                    className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-3 px-4 rounded-lg transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleCodeSubmit}
+                    disabled={codeInput.length !== 4}
+                    className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-medium py-3 px-4 rounded-lg transition-colors"
+                  >
+                    Access
+                  </button>
+                </div>
+
+                <p className="text-xs text-gray-500 mt-4">
+                  This area is restricted to authorized personnel only
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </footer>
   );
 };

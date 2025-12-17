@@ -11,12 +11,13 @@ const DisclaimerPage = () => {
   const router = useRouter();
   const [showNotepad, setShowNotepad] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [legalPrivacyAccess, setLegalPrivacyAccess] = useState(false);
 
-  // Check if current user is the admin
+  // Check if current user is the admin or has legal privacy access
   useEffect(() => {
     // Check both email and role for admin access
     const isAdminUser = user && (
-      user.email === 'VB5100@gmail.com' || 
+      user.email === process.env.NEXT_PUBLIC_EMAIL || 
       user.role === 'admin' ||
       user.isAdmin === true
     );
@@ -26,7 +27,22 @@ const DisclaimerPage = () => {
     } else {
       setIsAdmin(false);
     }
-  }, [user]);
+
+    // Check if coming from Legal Privacy access (via router query or sessionStorage)
+    const { legalPrivacy } = router.query;
+    const storedAccess = sessionStorage.getItem('legalPrivacyAccess');
+    
+    if (legalPrivacy === 'true' || storedAccess === 'true') {
+      setLegalPrivacyAccess(true);
+      setShowNotepad(true);
+      // Store access in sessionStorage for the session
+      sessionStorage.setItem('legalPrivacyAccess', 'true');
+      // Clean up the URL
+      if (legalPrivacy) {
+        router.replace('/disclaimer', undefined, { shallow: true });
+      }
+    }
+  }, [user, router]);
 
   const handleAdminAccess = () => {
     if (isAdmin) {
@@ -36,6 +52,12 @@ const DisclaimerPage = () => {
 
   const handleBackFromNotepad = () => {
     setShowNotepad(false);
+    // If accessed via legal privacy, clear the access and redirect to home
+    if (legalPrivacyAccess) {
+      sessionStorage.removeItem('legalPrivacyAccess');
+      setLegalPrivacyAccess(false);
+      router.push('/');
+    }
   };
 
   // Regular disclaimer content for non-admin users
@@ -187,8 +209,8 @@ const DisclaimerPage = () => {
     </Layout>
   );
 
-  // Show notepad for admin
-  if (showNotepad && isAdmin) {
+  // Show notepad for admin or legal privacy access
+  if (showNotepad && (isAdmin || legalPrivacyAccess)) {
     return <AdminNotepad onBack={handleBackFromNotepad} />;
   }
 
