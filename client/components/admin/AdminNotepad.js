@@ -145,11 +145,11 @@ const AdminNotepad = ({ onBack }) => {
 
   const saveNote = async () => {
     try {
-      const token = localStorage.getItem('token') || document.cookie.split('token=')[1]?.split(';')[0];
-      if (!token) {
-        alert('Authentication required. Please login again.');
-        return;
-      }
+      // const token = localStorage.getItem('token') || document.cookie.split('token=')[1]?.split(';')[0];
+      // if (!token) {
+      //   alert('Authentication required. Please login again.');
+      //   return;
+      // }
 
       const response = await fetch('/api/admin/note', {
         method: 'POST',
