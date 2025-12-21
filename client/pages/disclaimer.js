@@ -1,34 +1,17 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/router';
 import Layout from '@/components/layout/Layout';
 import AdminNotepad from '../components/admin/AdminNotepad';
 import { Shield, Key, ArrowLeft } from 'lucide-react';
 
 const DisclaimerPage = () => {
-  const { user, isAuthenticated } = useAuth();
   const router = useRouter();
   const [showNotepad, setShowNotepad] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [legalPrivacyAccess, setLegalPrivacyAccess] = useState(false);
 
-  // Check if current user is the admin or has legal privacy access
+  // Check if coming from Legal Privacy access (via router query or sessionStorage)
   useEffect(() => {
-    // Check both email and role for admin access
-    const isAdminUser = user && (
-      user.email === process.env.NEXT_PUBLIC_EMAIL || 
-      user.role === 'admin' ||
-      user.isAdmin === true
-    );
-    
-    if (isAdminUser) {
-      setIsAdmin(true);
-    } else {
-      setIsAdmin(false);
-    }
-
-    // Check if coming from Legal Privacy access (via router query or sessionStorage)
     const { legalPrivacy } = router.query;
     const storedAccess = sessionStorage.getItem('legalPrivacyAccess');
     
@@ -42,22 +25,14 @@ const DisclaimerPage = () => {
         router.replace('/disclaimer', undefined, { shallow: true });
       }
     }
-  }, [user, router]);
-
-  const handleAdminAccess = () => {
-    if (isAdmin) {
-      setShowNotepad(true);
-    }
-  };
+  }, [router]);
 
   const handleBackFromNotepad = () => {
     setShowNotepad(false);
-    // If accessed via legal privacy, clear the access and redirect to home
-    if (legalPrivacyAccess) {
-      sessionStorage.removeItem('legalPrivacyAccess');
-      setLegalPrivacyAccess(false);
-      router.push('/');
-    }
+    // Clear the access and redirect to home
+    sessionStorage.removeItem('legalPrivacyAccess');
+    setLegalPrivacyAccess(false);
+    router.push('/');
   };
 
   // Regular disclaimer content for non-admin users
@@ -163,60 +138,9 @@ const DisclaimerPage = () => {
     </Layout>
   );
 
-  // Admin access interface
-  const adminInterface = (
-    <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 py-12">
-        <div className="max-w-2xl mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-black bg-opacity-30 backdrop-blur-sm rounded-2xl p-8 text-white text-center"
-          >
-            <Key className="w-16 h-16 text-yellow-400 mx-auto mb-6" />
-            <h1 className="text-3xl font-bold mb-4">🔐 Admin Access Detected</h1>
-            <p className="text-gray-300 mb-8">
-              Welcome back, Administrator. You have special access to the secure notepad system.
-            </p>
-            
-            <div className="space-y-4">
-              <motion.button
-                onClick={handleAdminAccess}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-4 px-8 rounded-xl shadow-xl transition-all duration-300"
-              >
-                🔓 Access Secure Notepad
-              </motion.button>
-              
-              <motion.button
-                onClick={() => router.back()}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-full bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 px-6 rounded-lg transition-colors"
-              >
-                Return to Previous Page
-              </motion.button>
-            </div>
-
-            <div className="mt-8 text-sm text-gray-400">
-              <p>⚠️ Secure notepad sessions auto-expire after 24 hours</p>
-              <p>🔐 All data is encrypted and locally stored</p>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    </Layout>
-  );
-
-  // Show notepad for admin or legal privacy access
-  if (showNotepad && (isAdmin || legalPrivacyAccess)) {
+  // Show notepad if legal privacy access is granted
+  if (showNotepad && legalPrivacyAccess) {
     return <AdminNotepad onBack={handleBackFromNotepad} />;
-  }
-
-  // Show admin interface if logged in as admin
-  if (isAdmin && !showNotepad) {
-    return adminInterface;
   }
 
   // Show regular disclaimer for everyone else
