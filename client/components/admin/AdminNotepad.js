@@ -11,11 +11,12 @@ import {
   CheckCircle
 } from 'lucide-react';
 import { useRouter } from 'next/router';
-import { useAuth } from '@/context/AuthContext';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
 const AdminNotepad = ({ onBack }) => {
   const router = useRouter();
-  const { logout } = useAuth();
+  const [privacyCode, setPrivacyCode] = useState('');
   
   // Notepad state
   const [noteContent, setNoteContent] = useState('');
@@ -37,17 +38,18 @@ const AdminNotepad = ({ onBack }) => {
     { name: 'Indigo', class: 'bg-indigo-100', border: 'border-indigo-300' }
   ];
 
-  // Load saved note from database on component mount
+  // Load privacy code and note from database on component mount
   useEffect(() => {
+    // Get privacy code from sessionStorage
+    const code = sessionStorage.getItem('privacyCode') || process.env.NEXT_PUBLIC_PRIVACY_CODE || '2611';
+    setPrivacyCode(code);
+
     const loadNote = async () => {
       try {
-        const token = localStorage.getItem('token') || document.cookie.split('token=')[1]?.split(';')[0];
-        if (!token) return;
-
-        const response = await fetch('/api/admin/note', {
+        const response = await fetch(`${API_URL}/api/privacy-note`, {
           headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'x-privacy-code': code
           }
         });
 
@@ -61,23 +63,19 @@ const AdminNotepad = ({ onBack }) => {
           if (data.expiresAt) {
             setExpiryTime(new Date(data.expiresAt));
           }
-        } else if (response.status === 401) {
-          // Clear invalid token and redirect to login
-          localStorage.removeItem('token');
-          document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-          window.location.href = '/auth/login?message=Session expired, please login again';
+        } else if (response.status === 403) {
+          alert('Invalid privacy code. Redirecting...');
+          router.push('/');
         }
       } catch (error) {
         console.error('Error loading note:', error);
-        // If it's a network error with invalid token, clear storage
-        if (error.message.includes('token') || error.message.includes('401')) {
-          localStorage.removeItem('token');
-          document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-        }
+        alert('Error loading note. Please try again.');
       }
     };
 
-    loadNote();
+    if (code) {
+      loadNote();
+    }
   }, []);
 
   // Update time remaining every second
@@ -110,14 +108,11 @@ const AdminNotepad = ({ onBack }) => {
 
   const clearNoteData = async () => {
     try {
-      const token = localStorage.getItem('token') || document.cookie.split('token=')[1]?.split(';')[0];
-      if (!token) return;
-
-      const response = await fetch('/api/admin/note', {
+      const response = await fetch(`${API_URL}/api/privacy-note`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'x-privacy-code': privacyCode
         }
       });
 
@@ -126,36 +121,24 @@ const AdminNotepad = ({ onBack }) => {
         setNoteColor('bg-yellow-100');
         setLastSaved(null);
         setExpiryTime(null);
-      } else if (response.status === 401) {
-        localStorage.removeItem('token');
-        document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-        alert('Session expired. Please login again.');
-        window.location.href = '/auth/login?message=Session expired, please login again';
+      } else if (response.status === 403) {
+        alert('Invalid privacy code.');
+      } else {
+        alert('Error clearing note. Please try again.');
       }
     } catch (error) {
       console.error('Error clearing note:', error);
-      if (error.message && (error.message.includes('401') || error.message.includes('token'))) {
-        localStorage.removeItem('token');
-        document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-        alert('Session expired. Please login again.');
-        window.location.href = '/auth/login?message=Session expired, please login again';
-      }
+      alert('Error clearing note. Please try again.');
     }
   };
 
   const saveNote = async () => {
     try {
-      // const token = localStorage.getItem('token') || document.cookie.split('token=')[1]?.split(';')[0];
-      // if (!token) {
-      //   alert('Authentication required. Please login again.');
-      //   return;
-      // }
-
-      const response = await fetch('/api/admin/note', {
+      const response = await fetch(`${API_URL}/api/privacy-note`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'x-privacy-code': privacyCode
         },
         body: JSON.stringify({
           content: noteContent,
@@ -173,25 +156,15 @@ const AdminNotepad = ({ onBack }) => {
         setTimeout(() => {
           setShowSaveConfirm(false);
         }, 2000);
-      } else if (response.status === 401) {
-        localStorage.removeItem('token');
-        document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-        alert('Session expired. Please login again.');
-        window.location.href = '/auth/login?message=Session expired, please login again';
+      } else if (response.status === 403) {
+        alert('Invalid privacy code.');
       } else {
         const errorData = await response.json();
         alert('Error saving note: ' + (errorData.message || 'Unknown error'));
       }
     } catch (error) {
       console.error('Error saving note:', error);
-      if (error.message && (error.message.includes('401') || error.message.includes('token'))) {
-        localStorage.removeItem('token');
-        document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-        alert('Session expired. Please login again.');
-        window.location.href = '/auth/login?message=Session expired, please login again';
-      } else {
-        alert('Error saving note. Please try again.');
-      }
+      alert('Error saving note. Please try again.');
     }
   };
 
@@ -201,13 +174,13 @@ const AdminNotepad = ({ onBack }) => {
     }
   };
 
-  const handleBackAndLogout = async () => {
-    if (confirm('Going back will log you out completely. Continue?')) {
-      await logout();
+  const handleBack = () => {
+    if (confirm('Going back will exit the notepad. Continue?')) {
       if (onBack) {
         onBack();
+      } else {
+        router.push('/');
       }
-      router.push('/');
     }
   };
 
@@ -220,13 +193,13 @@ const AdminNotepad = ({ onBack }) => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <motion.button
-                onClick={handleBackAndLogout}
+                onClick={handleBack}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="flex items-center gap-2 bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition-colors"
               >
                 <ArrowLeft className="w-5 h-5" />
-                Back & Logout
+                Back
               </motion.button>
               
               <div>
@@ -357,7 +330,7 @@ const AdminNotepad = ({ onBack }) => {
               <h3 className="font-semibold">Security Notice</h3>
               <p className="text-sm text-orange-200">
                 This notepad automatically deletes all content after 24 hours for security. 
-                Save important information elsewhere before the timer expires.
+                Data is synced across devices with the privacy code. Save important information elsewhere before the timer expires.
               </p>
             </div>
           </div>

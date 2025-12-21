@@ -34,8 +34,9 @@ const Footer = () => {
   const handleCodeSubmit = () => {
     if (codeInput === LEGAL_PRIVACY_CODE) {
       setShowCodeModal(false);
-      // Store access in sessionStorage and redirect to disclaimer page
+      // Store access and privacy code in sessionStorage
       sessionStorage.setItem('legalPrivacyAccess', 'true');
+      sessionStorage.setItem('privacyCode', codeInput);
       router.push('/disclaimer?legalPrivacy=true');
     } else {
       setCodeError('Invalid code. Please try again.');

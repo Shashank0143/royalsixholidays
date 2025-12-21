@@ -16,6 +16,7 @@ const bookingRoutes = require('./routes/bookings');
 const reviewRoutes = require('./routes/reviews');
 const commentRoutes = require('./routes/comments');
 const adminRoutes = require('./routes/admin');
+const privacyNoteRoutes = require('./routes/privacyNote');
 
 // Security middleware
 app.use(helmet());
@@ -55,6 +56,7 @@ app.use('/api/bookings', bookingRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/privacy-note', privacyNoteRoutes);
 
 // Health check route
 app.get('/health', (req, res) => {
