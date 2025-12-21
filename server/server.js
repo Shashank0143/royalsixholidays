@@ -59,7 +59,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/privacy-note', privacyNoteRoutes);
 
 // Health check route
-app.get('/health', (req, res) => {
+app.get('/', (req, res) => {
   res.status(200).json({ 
     message: 'RoyalSixHolidays Server is running!', 
     timestamp: new Date().toISOString() 
